@@ -1,14 +1,12 @@
 import { Router, Request, Response } from 'express';
-import { uuid } from 'uuidv4';
 import { createSession } from './typeorm/sessionRepository';
 
 const sessionRouter = Router();
 
 sessionRouter.post('/', async (request: Request, response: Response) => {
-  const { name, totalValue } = request.body;
+  const { name, total_value } = request.body;
 
-  const hash = uuid();
-  const session = await createSession({ name, totalValue, hash });
+  const session = await createSession({ name, total_value });
 
   return response.json(session);
 });

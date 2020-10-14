@@ -9,7 +9,7 @@ class Session {
   name: string;
 
   @Column()
-  totalValue: number;
+  total_value: number;
 
   @Column()
   hash: string;

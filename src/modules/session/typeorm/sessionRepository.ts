@@ -1,17 +1,18 @@
 import { getMongoRepository } from 'typeorm';
 import Session from './schemas/sessionSchema';
+import { uuid } from 'uuidv4';
 
 interface ICreateSessionDTO {
   name: string;
-  totalValue: number;
-  hash: string;
+  total_value: number;
 }
 
-export const createSession = async ({ name, totalValue, hash }: ICreateSessionDTO): Promise<Session> => {
+export const createSession = async ({ name, total_value }: ICreateSessionDTO): Promise<Session> => {
 
   const ormRepository = getMongoRepository(Session);
+  const hash = uuid();
 
-  const session = ormRepository.create({ name, totalValue, hash });
+  const session = ormRepository.create({ name, total_value, hash });
 
   await ormRepository.save(session);
 

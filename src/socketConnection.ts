@@ -3,8 +3,7 @@ import socketio, { Server as IServer } from 'socket.io';
 import { ObjectID } from 'typeorm';
 
 interface IUserData {
-  socketId: string;
-  id: ObjectID;
+  socket_id: string;
   name: string;
   session_hash: string;
   monthly_cost: number;
@@ -12,8 +11,20 @@ interface IUserData {
   balance: number;
 }
 
+interface IProposal {
+  name: string;
+  value: number;
+}
+
+interface IUserProposalData {
+  from: string;
+  socket_id: string;
+  user_proposals: IProposal[];
+}
+
 export let socketServer: IServer;
 export let connectedUsers: IUserData[] = [];
+export let allProposals: IUserProposalData[] = [];
 
 export function connectToSocketServer(server: Server) {
   socketServer = socketio(server);
@@ -35,8 +46,17 @@ export function connectToSocketServer(server: Server) {
 }
 
 export function registerUserData(data: IUserData) {
-  // ON REGISTER, ADD TO INFO ARRAY
-  // AND EMIT TO ALL USERS
-  // connectedUsers.push(data);
-  // socketServer.emit('updateUsers', connectedUsers);
+  const filteredUsers = connectedUsers.filter(user => user.socket_id !== data.socket_id);
+
+  filteredUsers.push(data);
+  connectedUsers = filteredUsers;
+  socketServer.emit('updateUsers', connectedUsers);
+}
+
+export function updateProposals(data: IUserProposalData) {
+  const filteredProposals = allProposals.filter(proposal => proposal.socket_id !== data.socket_id);
+  filteredProposals.push(data);
+
+  allProposals = filteredProposals;
+  socketServer.emit('updateProposals', allProposals);
 }

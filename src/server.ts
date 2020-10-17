@@ -7,6 +7,7 @@ import { connectToSocketServer } from './socketConnection';
 
 import sessionRouter from './modules/session/sessionRouter';
 import userRouter from './modules/user/userRouter';
+import proposalRouter from './modules/proposal/proposalRouter';
 
 import './connection';
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use(cors());
 app.use('/session', sessionRouter);
 app.use('/user', userRouter);
+app.use('/proposal', proposalRouter);
 
 const server = http.createServer(app);
 connectToSocketServer(server);

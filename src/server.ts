@@ -8,6 +8,7 @@ import { connectToSocketServer } from './socketConnection';
 import sessionRouter from './modules/session/sessionRouter';
 import userRouter from './modules/user/userRouter';
 import proposalRouter from './modules/proposal/proposalRouter';
+import pileRouter from './modules/pile/pileRouter';
 
 import './connection';
 
@@ -18,6 +19,7 @@ app.use(cors());
 app.use('/session', sessionRouter);
 app.use('/user', userRouter);
 app.use('/proposal', proposalRouter);
+app.use('/pile', pileRouter);
 
 const server = http.createServer(app);
 connectToSocketServer(server);
